@@ -4,7 +4,7 @@ const net = require('net');
 const ssh2 = require("ssh2");
 const portfinder = require('portfinder');
 const config = require("./config.js");
-						
+
 new ssh2.Server(
 	{
 		hostKeys: [fs.readFileSync("host.key")],
@@ -17,7 +17,7 @@ new ssh2.Server(
 				var foundLogin = config.logins.filter((item) => {
 					return ctx.user.length === item.user.length && crypto.timingSafeEqual(Buffer.from(item.user), user)
 				})
-				if(foundLogin.length === 0) {
+				if (foundLogin.length === 0) {
 					return ctx.reject();
 				}
 				foundLogin = foundLogin[0]
@@ -47,28 +47,31 @@ new ssh2.Server(
 					if (name === 'tcpip-forward') {
 						portfinder.getPort({
 							port: config.portRange[0],    // minimum port
-    					stopPort: config.portRange[1] // maximum port
+							stopPort: config.portRange[1] // maximum port
 						}, function (err, port) {
-							if(err) {
+							if (err) {
 								reject()
 							}
-							var localServer = net.createServer(function(socket) {
-								socket.setEncoding('utf8');
+							var localServer = net.createServer(function (socket) {
 								client.forwardOut(
 									info.bindAddr, port,
-									socket.remoteAddress, socket.remotePort,
+									"127.0.0.1", port,
 									(err, upstream) => {
 										if (err) {
 											socket.end();
 											return console.error('not working: ' + err);
 										}
-										upstream.pipe(socket).pipe(upstream);
+										socket.pipe(upstream)
+										upstream.pipe(socket)
 									});
 							});
-							localServer.listen(port, "0.0.0.0", null, (function() {
+							localServer.listen(port, "0.0.0.0", null, (function () {
 								accept(port)
-							}));
-						});						
+							}))
+							client.on('end', function () {
+								localServer.close()
+							})
+						});
 					} else {
 						reject();
 					}
