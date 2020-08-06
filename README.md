@@ -27,7 +27,7 @@ It's a great alternative to ngrok.io.
 - Easy to set up, works with Docker
 - No need to install anything on the user side (if you have a OS with SSH preinstalled, such as Linux or Mac)
 - Simpler than other implementations, both the SSH server and the forwarding server are implemented in a single app.
-- Easy to deploy, you can simply renamed `config.sample.js` to `config.js`, set login credentials and spawn the Docker-container
+- Easy to deploy, you can simply rename `config.sample.js` to `config.js`, set login credentials and spawn the Docker-container
 
 ## How to set it up
 
