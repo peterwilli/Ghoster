@@ -1,0 +1,10 @@
+{
+  "name": "ghoster",
+  "version": "1.0.0",
+  "main": "main.js",
+  "license": "MIT",
+  "dependencies": {
+    "portfinder": "^1.0.28",
+    "ssh2": "^0.8.9"
+  }
+}
