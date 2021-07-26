@@ -52,6 +52,7 @@ new ssh2.Server(
 							if (err) {
 								reject()
 							}
+							console.log(`Client forwarding port ${port}...`);
 							var localServer = net.createServer(function (socket) {
 								client.forwardOut(
 									info.bindAddr, port,
